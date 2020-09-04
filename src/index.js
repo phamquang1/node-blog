@@ -1,26 +1,46 @@
+
 const express = require('express')
 const morgan = require('morgan')
 const handlebars = require('express-handlebars')
+const methodOverride = require('method-override')
+
 const path = require('path')
+// const { urlencoded } = require('express')
 const app = express()
 const port = 3000
+
+const route = require('./routes/index')
+const db = require('./config/db/index')
+
+//connect DB
+db.connect();
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'))
+
 //
+app.use(express.urlencoded({
+  extended: true
+}))
+app.use(express.json())
+
+// Để dùng các file tĩnh như css...
 app.use(express.static(path.join(__dirname,'public')))
+
 //http logger
-app.use(morgan('combined'))
+// app.use(morgan('combined'))
 
 //template engine
-app.engine('handlebars', handlebars());
+app.engine('handlebars', handlebars({
+  helpers : {
+    sum : (a,b)=>  a + b
+  }
+}));
 app.set('view engine', 'handlebars');
-app.set('views',path.join(__dirname,'resources/views'))
+app.set('views',path.join(__dirname,'resources','views'))
 
-//
-app.get('/', (req, res) => {
-    res.render('home')
-})
-app.get('/news', (req, res) => {
-  res.render('news')
-})
+// Routes init
+route(app)
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

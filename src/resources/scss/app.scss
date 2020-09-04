@@ -1,4 +1,12 @@
 @import 'variables';
-h1{
-    color: green;
+
+.card-course-item{
+    margin-top: 16px;
+}
+th,td{
+    text-align: center;
+}
+.select-all-option{
+    width: 150px;
+    margin: 0 16px;
 }
