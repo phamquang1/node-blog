@@ -5,8 +5,15 @@ const { mongooseToObject, mutilpleMongooseToObject } = require('../../util/mango
 class MeController {
     // me/stored/courses
     storedCourses(req,res,next){
-
-        Promise.all([Course.find({}),Course.countDocumentsDeleted()])
+        let coursesQuery = Course.find({})
+        
+        if(req.query.hasOwnProperty('_sort')){
+            coursesQuery = coursesQuery.sort({
+                [req.query.column] : req.query.type
+            })
+        }
+        
+        Promise.all([coursesQuery,Course.countDocumentsDeleted()])
             .then(([courses,deletedCount]) => {
                 res.render('me/stored-courses',{
                     courses : mutilpleMongooseToObject(courses),
