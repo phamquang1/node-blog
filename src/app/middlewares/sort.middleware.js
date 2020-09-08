@@ -1,4 +1,4 @@
-module.exports = function(req,res,next){
+module.exports = function (req,res,next){
 
     res.locals._sort = {
         enabled : false,

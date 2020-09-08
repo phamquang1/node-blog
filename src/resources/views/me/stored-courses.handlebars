@@ -14,7 +14,7 @@
                 <option value="delete">Xóa</option>
 
             </select>
-            <button class="btn btn-primary btn-sm disabled btn-checkall-submit">
+            <button class="btn btn-primary btn-sm  btn-checkall-submit" disabled>
                 Áp dụng
             </button>
         </div>
@@ -132,20 +132,13 @@
             }
             renderCheckAllSubmitBtn()
         })
-        // checl all submit click
-        btnCheckallSubmit.on('submit',function(e){
-            let isSubmittable = !$(this).hasClass('disabled')
-            if(!isSubmittable){
-                e.preventDefault()
-            }
-        })
         // Re- render check all submit button
         function renderCheckAllSubmitBtn() {
             let checkedCount = $('input[name="courseIds[]"]:checked').length
             if(checkedCount > 0){
-                btnCheckallSubmit.removeClass('disabled')
+                btnCheckallSubmit.attr('disabled',false)
             } else {
-                btnCheckallSubmit.addClass('disabled')
+                btnCheckallSubmit.attr('disabled',true)
             }
         }
         
